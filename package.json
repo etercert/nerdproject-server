@@ -1,0 +1,14 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Nerdproject game server",
+  "main": "src/node/server.js",
+  "scripts": {
+    "test": "echo node src/node/testServer.js && exit 1"
+  },
+  "author": "napiorkowskim",
+  "license": "GPL",
+  "dependencies": {
+    "socket.io": "^1.7.3"
+  }
+}
