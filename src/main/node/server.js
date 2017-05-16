@@ -12,7 +12,11 @@ var io = util.serverStart();
 var users = Dict();
 var gameQueue = Deque();
 
-const CONFIRMATION_WAIT_TIME = 3000;
+if(process.env.NODE_ENV === 'test'){
+  const CONFIRMATION_WAIT_TIME = 500;
+}else {
+  const CONFIRMATION_WAIT_TIME = 60000;
+}
 
 const events = {
 //registering
@@ -31,7 +35,6 @@ const events = {
   moveResp:           'mr',
   sessionStart:       'sessionStart', //ok
   sessionStop:        'sessionStop', //ok
-  turn:               'turn',       //ok
 //reset
   reset:              'reset'
 };
@@ -185,7 +188,18 @@ io.on('connection', function (socket) {
     if(user.gameSession !== undefined){
       user.gameSession.move(user, move);
     }
-  })
+  });
+
+  socket.on(events.moveResp, (move) => {
+    if(user.state !== User.STATES.inGame){
+      socket.emit(events.reset);
+      user.reset();
+      return;
+    }
+    if(user.gameSession !== undefined){
+      user.gameSession.moveResp(user, move);
+    }
+  });
 
   socket.on('reconnect', () => {
     socket.emit(events.reset);

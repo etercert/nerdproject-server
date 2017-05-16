@@ -39,17 +39,16 @@ class GameSession {
     this.user1.socket.emit('scoreUpdate', [this.user1Score, this.user2Score]);
     this.user2.socket.emit('scoreUpdate', [this.user2Score, this.user1Score]);
   }
+
+  moveResp(user, move) {
+    if(user === this.getDefender()){
+        this.attacker.socket.emit('mr', move);
+    }
+  }
+
   move(user, move) {
     if(user === this.attacker){
-      this.getDefender().socket.emit('m', move);
-    }else {
-      this.user2Score++;
-      this.user1Score++;
-      this.sendScoreUpdate();
-      let def = this.getDefender();
-      def.socket.emit('turn', def.name);
-      this.attacker.socket.emit('turn', def.name);
-      this.attacker = def;
+        this.getDefender().socket.emit('m', move);
     }
   }
 

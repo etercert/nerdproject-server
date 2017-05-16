@@ -254,7 +254,7 @@ describe('game session', () => {
   });
 
   it('makes second user win when user leaves', (done) => {
-    client2.on(srv.events.win, (name) => {
+    client2.on('win', (name) => {
       expect(name).toBe('client2');
       done();
     });
